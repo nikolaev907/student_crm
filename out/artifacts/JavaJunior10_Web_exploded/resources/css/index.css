@@ -1,0 +1,7 @@
+#navHeader {
+    padding-top: 30px;
+}
+
+#navHeader a:hover {
+    color: white;
+}
