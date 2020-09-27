@@ -1,7 +1,6 @@
 package controllers;
 
 import database.DBManager;
-import entity.Discipline;
 import entity.Student;
 
 import javax.servlet.ServletException;

@@ -1,4 +1,3 @@
-<%@ page import="java.util.Date" %>
 <%@ page import="java.util.Calendar" %>
 <%@ page import="java.util.GregorianCalendar" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -12,8 +11,9 @@
 
     <script type="text/javascript" src="../../resources/js/function.js"></script>
     <link rel="stylesheet" href="resources/css/bootstrap/bootstrap.min-4.3.1.css">
-    <link rel="shortcut icon" type="image/x-icon" href="../../resources/images/image/crm1.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../resources/images/image/crm.ico"/>
     <script type="text/javascript" src="resources/js/jquery-3.4.1.slim.min.js"></script>
+    <link rel="stylesheet" href="../../resources/css/bootstrap/bootstrap.min.css.map">
     <script type="text/javascript" src="resources/js/jquery-1.12.4.js"></script>
     <script type="text/javascript" src="resources/js/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="resources/js/popper.min.js"></script>

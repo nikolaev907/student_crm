@@ -16,7 +16,8 @@
 <section>
     <div class="row">
         <div class="col-lg-2"></div>
-        <div class="justify-content-start"><h5 class="text-color-table pl-3 mb-n1 mt-2">Отображена успеваемость для следущего студента:</h5></div>
+        <div class="justify-content-start"><h5 class="text-color-table pl-3 mb-n1 mt-2">Отображена успеваемость для
+            следущего студента:</h5></div>
     </div>
     <div class="row justify-content-center">
         <div class="overflow-auto col-sm-12 col-lg-8 mt-2">
@@ -142,14 +143,16 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <c:set value="0" var="s"/>
-                            <c:forEach items="${data.marks}" var="dm" varStatus="i">
-                                <c:set var="sum" value="${s = s + dm}"/>
-                                <c:set var="count" value="${i.count}"/>
-                            </c:forEach>
+                            <%-- <c:set value="0" var="s"/>
+                             <c:forEach items="${data.marks}" var="dm" varStatus="i">
+                                 <c:set var="sum" value="${s = s + dm}"/>
+                                 <c:set var="count" value="${i.count}"/>
+                             </c:forEach>--%>
                             <h5 class="text-color-table">Средняя оценка за семестр:
-                                <b class="color-header"><c:out
-                                        value="${Math.ceil((sum div count * 100)) div 100.0}"/></b>
+                                <b class="color-header">
+                                    ${averageMark}
+                                    <%--                                    <c:out value="${Math.ceil((sum div count * 100)) div 100.0}"/>--%>
+                                </b>
                                 балла.
                             </h5>
                         </div>

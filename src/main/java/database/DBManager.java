@@ -18,7 +18,6 @@ public class DBManager {
     private static PreparedStatement createTerm;
     private static PreparedStatement createTerm_discipline;
     private static PreparedStatement modifyTerm;
-//    private static PreparedStatement modifyTerm_discipline;
 
     static {
         try {
@@ -43,7 +42,6 @@ public class DBManager {
             createTerm = con.prepareStatement("INSERT INTO term (name, duration) VALUES (?, ?)");
             createTerm_discipline = con.prepareStatement("INSERT INTO term_discipline (id_term, id_discipline) VALUES (?, ?)");
             modifyTerm = con.prepareStatement("UPDATE term SET duration = ? WHERE term.id = ?");
-//            modifyTerm_discipline = con.prepareStatement("UPDATE term_discipline SET id_discipline = ? WHERE id_term = ? AND  id = ?");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -94,26 +92,6 @@ public class DBManager {
             e.printStackTrace();
         }
         return i;
-    }
-
-    public static List getDisciplineByIdTerm(int idTerm) {
-        List<Discipline> disciplines = new ArrayList<>();
-
-        try {
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT d.* FROM term_discipline td LEFT JOIN discipline d ON " +
-                    "d.id = td.id_discipline LEFT JOIN term t ON" +
-                    "t.id = td.id WHERE t.id = " + idTerm + " AND d.status = 1 AND t.status = 1;");
-            while (rs.next()) {
-                Discipline discipline = new Discipline();
-//                discipline.setMark(rs.getInt(9));
-                discipline.setDiscipline(rs.getString(2));
-                disciplines.add(discipline);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return disciplines;
     }
 
     public static int modifyDiscipline(String name, String id) {
@@ -531,6 +509,20 @@ public class DBManager {
             e.printStackTrace();
         }
         return roles;
+    }
+
+    public static double getAverageGradeByIdMark(String grades) {
+        double avgMark = 0;
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT AVG(m.mark) FROM mark m WHERE m.id IN (" + grades + ")");
+            if (rs.next()) {
+                avgMark = rs.getDouble(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return avgMark;
     }
 }
 
