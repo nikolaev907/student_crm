@@ -29,8 +29,8 @@
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>2.7</version>
             </plugin>
-            <!---->
-          <!--  <plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.6</version>
@@ -48,27 +48,34 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>2.7</version>
-            </plugin>-->
-            <!---->
-            <!-- <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
-               <artifactId>maven-site-plugin</artifactId>
-               <version>3.7.1</version>
-           </plugin>-->
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.7.1</version>
+            </plugin>
         </plugins>
         <extensions>
-          <!--  <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-webdav-jackrabbit</artifactId>
-                <version>1.0-beta-7</version>
-            </extension>-->
+            <!--  <extension>
+                  <groupId>org.apache.maven.wagon</groupId>
+                  <artifactId>wagon-webdav-jackrabbit</artifactId>
+                  <version>1.0-beta-7</version>
+              </extension>-->
         </extensions>
     </build>
     <distributionManagement>
         <site>
             <id>site</id>
-            <url>http://359223-vds-nikolaev1972.72.gmhost.pp.ua:8080</url>
+            <url>https://alexey-nikolaev.ru</url>
         </site>
+        <repository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>repo</id>
+            <name>My Repository</name>
+            <url>file://C:/Users/Dell/.m2</url>
+            <layout>default</layout>
+        </repository>
     </distributionManagement>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
@@ -96,16 +103,16 @@
             <scope>compile</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-dependency-plugin -->
-       <!-- <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <version>3.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-site-plugin</artifactId>
-            <version>3.7.1</version>
-        </dependency>-->
+        <!-- <dependency>
+             <groupId>org.apache.maven.plugins</groupId>
+             <artifactId>maven-dependency-plugin</artifactId>
+             <version>3.1.1</version>
+         </dependency>
+         <dependency>
+             <groupId>org.apache.maven.plugins</groupId>
+             <artifactId>maven-site-plugin</artifactId>
+             <version>3.7.1</version>
+         </dependency>-->
 
     </dependencies>
 

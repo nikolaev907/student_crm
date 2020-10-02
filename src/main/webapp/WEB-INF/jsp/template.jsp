@@ -83,7 +83,7 @@
     <c:set var="currentYear" value="<%=new GregorianCalendar().get(Calendar.YEAR)%>"/>
     <div class="end"></div>
 </div>
-<footer class="position-fixed">
+<footer>
     <div class="col-auto font-size-12px-xs pl-2 pt-sm-2 font-italic p-td-th-xs p-td-th-md">
         &copy; 2020-<c:out value="${currentYear}"/> Алексей Николаев, адрес почты: nikolaev1972.72@mail.ru
     </div>
