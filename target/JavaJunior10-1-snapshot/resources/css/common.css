@@ -13,6 +13,11 @@ html, body {
     background-color: #f5fff9;
     box-shadow: inset 0 0 43px -6px rgba(112, 156, 178, 1);
 }
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 
 #titleHeader {
     color: rgb(112, 156, 178);
