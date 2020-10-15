@@ -1,6 +1,6 @@
 package controllers;
 
-import database.DBManager;
+import database.LoginDB;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +14,7 @@ import java.util.List;
 public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<String> roles = DBManager.getRoles();
+        List<String> roles = LoginDB.getRoles();
 
         req.setAttribute("roles", roles);
         req.setAttribute("currentPage", "/WEB-INF/jsp/login.jsp");
@@ -24,14 +24,14 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<String> roles = DBManager.getRoles();
+        List<String> roles = LoginDB.getRoles();
 
         String login = req.getParameter("login");
         String password = req.getParameter("pass");
         String role = req.getParameter("role");
 
-        boolean access = DBManager.getAccountByLoginPasswordRole(login, password, role);
-        if (access) {
+        boolean isSuccessAccess = LoginDB.findAccountByLoginPasswordRole(login, password, role);
+        if (isSuccessAccess) {
             req.getSession().setAttribute("isLogin", "1");
             req.getSession().setAttribute("role", role);
             req.getSession().setAttribute("username", login);

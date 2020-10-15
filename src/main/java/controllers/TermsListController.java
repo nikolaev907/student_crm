@@ -1,6 +1,6 @@
 package controllers;
 
-import database.DBManager;
+import database.TermDB;
 import entity.Term;
 
 import javax.servlet.ServletException;
@@ -15,7 +15,7 @@ import java.util.List;
 public class TermsListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Term> terms = DBManager.getAllActiveTermAndDiscipline();
+        List<Term> terms = TermDB.findAllActiveTermAndDiscipline();
         req.setAttribute("terms", terms);
         String selTerm = req.getParameter("selTerm");
         if (selTerm != null) {
@@ -46,8 +46,7 @@ public class TermsListController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String id = req.getParameter("deleteTerm");
-        int success = DBManager.deleteTerm(id);
-//        success += DBManager.deleteTermDisciplineById(id);
+        int success = TermDB.deleteTerm(id);
         resp.sendRedirect("terms?success=" + success);
     }
 }

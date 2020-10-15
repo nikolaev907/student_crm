@@ -1,6 +1,6 @@
 package controllers;
 
-import database.DBManager;
+import database.DisciplineDB;
 import entity.Discipline;
 
 import javax.servlet.ServletException;
@@ -15,7 +15,7 @@ public class DisciplineModifyingController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idDisc = req.getParameter("idModifyDisc");
-        Discipline discipline = DBManager.getDisciplineById(idDisc);
+        Discipline discipline = DisciplineDB.findDisciplineById(idDisc);
         req.setAttribute("disc", discipline);
         req.setAttribute("currentPage", "/WEB-INF/jsp/disciplineModifying.jsp");
         req.setAttribute("titlePage", "Редактирование дисиплины");
@@ -26,7 +26,7 @@ public class DisciplineModifyingController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String name = req.getParameter("name").trim();
         String id = req.getParameter("id").trim();
-        int success = DBManager.modifyDiscipline(name, id);
+        int success = DisciplineDB.modifyDiscipline(name, id);
         resp.sendRedirect("disciplines?success=" + success);
 
     }

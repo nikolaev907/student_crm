@@ -1,6 +1,8 @@
 package controllers;
 
-import database.DBManager;
+import database.DisciplineDB;
+import database.StudentDB;
+import database.TermDB;
 import entity.Discipline;
 import entity.Term;
 import utils.AverageMarkUtils;
@@ -22,13 +24,13 @@ public class StudentProgressController extends HttpServlet {
         Map<String, Object> data;
         String idProgressStudent = req.getParameter("idProgressStudent");
         int idStudent = Integer.parseInt(idProgressStudent);
-        List<Term> terms = DBManager.getAllActiveTermAndDiscipline();
+        List<Term> terms = TermDB.findAllActiveTermAndDiscipline();
         String idTermStr = req.getParameter("idTerm");
         double averageGradeByIdMark;
 
         if (idTermStr != null) {
             int idTerm = Integer.parseInt(req.getParameter("idTerm"));
-            data = DBManager.extractStudentTermsDisciplines(idStudent, idTerm);
+            data = StudentDB.findTermsDisciplinesOfStudentByStudentIdAndTermId(idStudent, idTerm);
             averageGradeByIdMark = averageMarkUtils.getAverageMark(data);
             String[] setGrades = req.getParameterValues("setGrades");
             AtomicInteger currentMark = new AtomicInteger();
@@ -40,7 +42,7 @@ public class StudentProgressController extends HttpServlet {
                         List marksId = (ArrayList) es.getValue();
                         for (int i = 0; i < marksId.size(); i++) {
                             int grade = Integer.parseInt(setGrades[i]);
-                            DBManager.updateMark((Integer) marksId.get(i), grade);
+                            DisciplineDB.updateMark((Integer) marksId.get(i), grade);
                         }
                     }
                     if (es.getKey().equals("disciplines")) {
@@ -63,7 +65,7 @@ public class StudentProgressController extends HttpServlet {
             }
             req.setAttribute("idTerm", idTerm);
         } else {
-            data = DBManager.extractStudentTermsDisciplines(idStudent, 1);
+            data = StudentDB.findTermsDisciplinesOfStudentByStudentIdAndTermId(idStudent, 1);
             averageGradeByIdMark = averageMarkUtils.getAverageMark(data);
 
             req.setAttribute("idTerm", 1);

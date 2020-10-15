@@ -1,6 +1,8 @@
 package controllers;
 
-import database.DBManager;
+import database.DisciplineDB;
+import database.StudentDB;
+import database.TermDB;
 import entity.Discipline;
 import entity.Student;
 
@@ -16,7 +18,7 @@ import java.util.List;
 public class TermCreatingController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Discipline> disciplines = DBManager.getAllActiveDisciplines();
+        List<Discipline> disciplines = DisciplineDB.findAllActiveDisciplines();
         req.setAttribute("disciplines", disciplines);
         req.setAttribute("currentPage", "/WEB-INF/jsp/termCreating.jsp");
         req.setAttribute("titlePage", "Создание семестра");
@@ -28,17 +30,17 @@ public class TermCreatingController extends HttpServlet {
         String[] disciplines = req.getParameterValues("disciplines");
         int term_disciplineAdd = 0;
         String week = req.getParameter("week");
-        DBManager.createTerm(week);
-        int termId = DBManager.extractLastTermId();
+        TermDB.createTerm(week);
+        int termId = TermDB.findLastTermId();
         for (String idDiscipline : disciplines) {
-            term_disciplineAdd = DBManager.createTerm_discipline(idDiscipline);
+            term_disciplineAdd = TermDB.createTerm_discipline(idDiscipline);
         }
-        final List<Student> allActiveStudents = DBManager.getAllActiveStudents();
+        final List<Student> allActiveStudents = StudentDB.findAllActiveStudents();
         int successCreateMark = 0;
-        for (int tdId : DBManager.getAllIdTermDisciplineByIdTerm(termId)) {
+        for (int tdId : TermDB.findAllIdTermDisciplineByIdTerm(termId)) {
             for (Student stud : allActiveStudents) {
                 int studId = stud.getId();
-                successCreateMark = DBManager.createMark(studId, tdId);
+                successCreateMark = DisciplineDB.createMark(studId, tdId);
             }
         }
 

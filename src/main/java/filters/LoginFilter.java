@@ -9,7 +9,7 @@ import java.io.IOException;
 @WebFilter(filterName = "LoginFilter", urlPatterns = "/*")
 public class LoginFilter implements Filter {
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
 
     }
 
@@ -23,8 +23,11 @@ public class LoginFilter implements Filter {
                 return;
             }
         }
-        if (!req.getRequestURI().endsWith(".css") && !req.getRequestURI().endsWith(".js")
-                && !req.getRequestURI().endsWith(".img") && !req.getRequestURI().endsWith(".svg")) {
+        if (!req.getRequestURI().endsWith(".css")
+                && !req.getRequestURI().endsWith(".js")
+                && !req.getRequestURI().endsWith(".img")
+                && !req.getRequestURI().endsWith(".ico")
+                && !req.getRequestURI().endsWith(".svg")) {
             if (req.getSession().getAttribute("isLogin") == null) {
                 req.getSession().setAttribute("isLogin", "0");//0
                 resp.sendRedirect("/login");//login

@@ -1,6 +1,6 @@
 package controllers;
 
-import database.DBManager;
+import database.StudentDB;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,16 +13,16 @@ import java.io.IOException;
 public class StudentsListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("stud", DBManager.getAllActiveStudents());
+        req.setAttribute("stud", StudentDB.findAllActiveStudents());
         req.setAttribute("currentPage", "/WEB-INF/jsp/studentsList.jsp");
         req.setAttribute("titlePage", "Список студентов");
         req.getRequestDispatcher("/WEB-INF/jsp/template.jsp").forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String id = req.getParameter("idDeleteStudent");
-        int success = DBManager.deleteStudent(id);
+        int success = StudentDB.deleteStudent(id);
         resp.sendRedirect("students?success=" + success + "&id=" + id);
     }
 }

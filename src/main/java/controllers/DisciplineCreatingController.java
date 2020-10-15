@@ -1,6 +1,6 @@
 package controllers;
 
-import database.DBManager;
+import database.DisciplineDB;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,7 +21,7 @@ public class DisciplineCreatingController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String parameter = req.getParameter("disc").trim();
-        req.setAttribute("success", DBManager.createDiscipline(parameter));
+        req.setAttribute("success", DisciplineDB.createDiscipline(parameter));
         req.setAttribute("name", parameter);
         resp.sendRedirect("/disciplines");
     }

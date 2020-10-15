@@ -1,6 +1,8 @@
 package controllers;
 
-import database.DBManager;
+import database.DisciplineDB;
+import database.StudentDB;
+import database.TermDB;
 import entity.Student;
 
 import javax.servlet.ServletException;
@@ -23,41 +25,33 @@ public class StudentCreatingController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String surname = req.getParameter("surname").trim();
-        String name = req.getParameter("name").trim();
-        String group = req.getParameter("group").trim();
-        String date = req.getParameter("date_receipt").trim();
-       /* SimpleDateFormat fromUser = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");*/
-//        SimpleDateFormat fromUser = new SimpleDateFormat("dd/MM/yyyy");
-//        SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         int successCreateStudent = 0;
         int isEmptyTerm = 1;
         int isEmptyDiscipline = 1;
         boolean isIdTermDiscipline = false;
         boolean isLastIdStudent = false;
+        String surname = req.getParameter("surname").trim();
+        String name = req.getParameter("name").trim();
+        String group = req.getParameter("group").trim();
+        String date = req.getParameter("date_receipt").trim();
 
-//        try {
-//            String reformattedStr = myFormat.format(fromUser.parse(date));
-//        int emptyDiscipline = 1;
-        if (!DBManager.getAllActiveDisciplines().isEmpty()) {
+        if (!DisciplineDB.findAllActiveDisciplines().isEmpty()) {
             isEmptyDiscipline = 0;
-            if (!DBManager.getAllActiveTermAndDiscipline().isEmpty()) {
+            if (!TermDB.findAllActiveTermAndDiscipline().isEmpty()) {
                 isEmptyTerm = 0;
-                successCreateStudent = DBManager.createStudent(name, surname, group, date /*reformattedStr*/);
+                successCreateStudent = StudentDB.createStudent(name, surname, group, date);
 
-                List<Student> allActiveStudents = DBManager.getAllActiveStudents();
-                List<Integer> allTermDisciplineId = DBManager.getAllTermDisciplineId();
-                Map<String, Integer> allFromMark = DBManager.getAllIdTermDisciplineFromMark();
+                List<Student> allActiveStudents = StudentDB.findAllActiveStudents();
+                List<Integer> allTermDisciplineId = StudentDB.findAllTermDisciplineId();
+                Map<String, Integer> allFromMark = TermDB.findAllIdTermDisciplineFromMark();
                 int lastStudentId = 0;
                 if (allActiveStudents.stream().map(Student::getId).max(Integer::compareTo).isPresent()) {
                     lastStudentId = allActiveStudents.stream().map(Student::getId).max(Integer::compareTo).get();
                 }
-                List<Integer> getAllTermId = DBManager.getAllTermId();
+                List<Integer> getAllTermId = TermDB.findAllTermId();
                 if (!allTermDisciplineId.isEmpty()) {
-    //                emptyDiscipline = 0;
                     for (int tId : getAllTermId) {
-                        List<Integer> termDisciplineIdByIdTerm = DBManager.getAllIdTermDisciplineByIdTerm(tId);
+                        List<Integer> termDisciplineIdByIdTerm = TermDB.findAllIdTermDisciplineByIdTerm(tId);
                         for (int tdId : termDisciplineIdByIdTerm) {
                             if (!allFromMark.isEmpty()) {
                                 isIdTermDiscipline = allFromMark.get("idTermDiscipline").equals(tdId);
@@ -66,10 +60,10 @@ public class StudentCreatingController extends HttpServlet {
                             for (Student stud : allActiveStudents) {
                                 int studId = stud.getId();
                                 if (isIdTermDiscipline && isLastIdStudent) {
-                                    DBManager.createMark(studId, tdId);
+                                    DisciplineDB.createMark(studId, tdId);
                                 }
                             }
-                            DBManager.createMark(lastStudentId, tdId);
+                            DisciplineDB.createMark(lastStudentId, tdId);
                         }
                     }
                 }
@@ -86,10 +80,7 @@ public class StudentCreatingController extends HttpServlet {
             resp.sendRedirect("/term-create?isEmptyTerm=" + isEmptyTerm);
         } else {
             resp.sendRedirect("/students?successCreateStudent=" + successCreateStudent
-                    + "&date=" + date /*reformattedStr*/);
+                    + "&date=" + date);
         }
-       /* } catch (ParseException e) {
-            e.printStackTrace();
-        }*/
     }
 }

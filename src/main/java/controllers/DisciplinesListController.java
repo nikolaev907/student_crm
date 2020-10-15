@@ -1,6 +1,6 @@
 package controllers;
 
-import database.DBManager;
+import database.DisciplineDB;
 import entity.Discipline;
 
 import javax.servlet.ServletException;
@@ -15,8 +15,8 @@ import java.util.List;
 public class DisciplinesListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Discipline> disciplines = DBManager.getAllActiveDisciplines();
-        req.setAttribute("disces", disciplines);
+        List<Discipline> disciplines = DisciplineDB.findAllActiveDisciplines();
+        req.setAttribute("disciplines", disciplines);
         req.setAttribute("currentPage", "/WEB-INF/jsp/disciplinesList.jsp");
         req.setAttribute("titlePage", "Список дисиплин");
         req.getRequestDispatcher("/WEB-INF/jsp/template.jsp").forward(req, resp);
@@ -26,7 +26,7 @@ public class DisciplinesListController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String id = req.getParameter("idDeleteDisc");
-        int success = DBManager.deleteDiscipline(id);
+        int success = DisciplineDB.deleteDiscipline(id);
         resp.sendRedirect("disciplines?success=" + success + "&id=" + id);
     }
 }

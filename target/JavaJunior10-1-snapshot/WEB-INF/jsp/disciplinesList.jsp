@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
@@ -32,7 +32,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach items="${disces}" var="d" varStatus="i">
+                            <c:forEach items="${disciplines}" var="d" varStatus="i">
                                 <c:if test="${d.discipline.length() > 0}">
                                     <tr id="tr${i.count}" class="countList text-color-table p-td-th-xs">
                                         <c:if test="${role eq 1}">
@@ -51,7 +51,7 @@
                                     </tr>
                                 </c:if>
                             </c:forEach>
-                            <c:if test="${disces[0].discipline.length() == null || disces[0].discipline.length() == 0 || disces[0].discipline eq ''}">
+                            <c:if test="${disciplines[0].discipline.length() == null || disciplines[0].discipline.length() == 0 || disciplines[0].discipline.length() eq ''}">
                                 <td class="text-color-table text-center" colspan="3">< нет записей ></td>
                             </c:if>
                             </tbody>

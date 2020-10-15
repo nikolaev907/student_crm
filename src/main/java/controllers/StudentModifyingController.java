@@ -1,6 +1,6 @@
 package controllers;
 
-import database.DBManager;
+import database.StudentDB;
 import entity.Student;
 
 import javax.servlet.ServletException;
@@ -15,7 +15,7 @@ public class StudentModifyingController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idModifyStudent = req.getParameter("idModifyStudent");
-        Student student = DBManager.getStudentById(idModifyStudent);
+        Student student = StudentDB.getStudentById(idModifyStudent);
         req.setAttribute("student", student);
         req.setAttribute("currentPage", "/WEB-INF/jsp/studentModifying.jsp");
         req.setAttribute("titlePage", "Редактирование студента");
@@ -29,7 +29,7 @@ public class StudentModifyingController extends HttpServlet {
         String group = req.getParameter("group").trim();
         String date = req.getParameter("date_receipt");
         String id = req.getParameter("id");
-        req.setAttribute("success", DBManager.modifyStudent(name, surname, group, date, id));
+        req.setAttribute("success", StudentDB.modifyStudent(name, surname, group, date, id));
         req.setAttribute("name", name);
         req.setAttribute("surname", surname);
         req.setAttribute("date", date);

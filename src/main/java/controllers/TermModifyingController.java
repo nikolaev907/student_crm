@@ -1,6 +1,8 @@
 package controllers;
 
-import database.DBManager;
+import database.DisciplineDB;
+import database.StudentDB;
+import database.TermDB;
 import entity.Discipline;
 import entity.Student;
 
@@ -17,7 +19,7 @@ import java.util.Map;
 public class TermModifyingController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Discipline> disciplines = DBManager.getAllActiveDisciplines();
+        List<Discipline> disciplines = DisciplineDB.findAllActiveDisciplines();
         String termId = req.getParameter("termId");
         req.setAttribute("termId", termId);
         req.setAttribute("disciplines", disciplines);
@@ -31,17 +33,17 @@ public class TermModifyingController extends HttpServlet {
         String[] disciplines = req.getParameterValues("disciplines");
         String currentTermId = req.getParameter("termId");
         String week = req.getParameter("week");
-        final List<Student> allActiveStudents = DBManager.getAllActiveStudents();
-        final Map<String, Integer> allFromMark = DBManager.getAllIdTermDisciplineFromMark();
+        final List<Student> allActiveStudents = StudentDB.findAllActiveStudents();
+        final Map<String, Integer> allFromMark = TermDB.findAllIdTermDisciplineFromMark();
         int successCreateMark = 0;
-        int success = DBManager.modifyTerm(currentTermId, week, disciplines);
-        final List<Integer> termDisciplineIdByIdTerm = DBManager.getAllIdTermDisciplineByIdTerm(Integer.parseInt(currentTermId));
+        int success = TermDB.modifyTerm(currentTermId, week, disciplines);
+        final List<Integer> termDisciplineIdByIdTerm = TermDB.findAllIdTermDisciplineByIdTerm(Integer.parseInt(currentTermId));
         for (int tdId : termDisciplineIdByIdTerm) {
             final boolean isIdTermDiscipline = allFromMark.get("idTermDiscipline").equals(tdId);
             for (Student stud : allActiveStudents) {
                 int studId = stud.getId();
                 if (!isIdTermDiscipline) {
-                    successCreateMark = DBManager.createMark(studId, tdId);
+                    successCreateMark = DisciplineDB.createMark(studId, tdId);
                 }
             }
         }
