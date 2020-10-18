@@ -5,7 +5,6 @@ import database.StudentDB;
 import database.TermDB;
 import entity.Discipline;
 import entity.Term;
-import utils.AverageMarkUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,12 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @WebServlet(name = "StudentProgressController", urlPatterns = "/student-progress")
 public class StudentProgressController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        AverageMarkUtils averageMarkUtils = new AverageMarkUtils();
         Map<String, Object> data;
         String idProgressStudent = req.getParameter("idProgressStudent");
         int idStudent = Integer.parseInt(idProgressStudent);
@@ -31,7 +30,7 @@ public class StudentProgressController extends HttpServlet {
         if (idTermStr != null) {
             int idTerm = Integer.parseInt(req.getParameter("idTerm"));
             data = StudentDB.findTermsDisciplinesOfStudentByStudentIdAndTermId(idStudent, idTerm);
-            averageGradeByIdMark = averageMarkUtils.getAverageMark(data);
+            averageGradeByIdMark = getAverageMark(data);
             String[] setGrades = req.getParameterValues("setGrades");
             AtomicInteger currentMark = new AtomicInteger();
             req.setAttribute("averageMark", averageGradeByIdMark);
@@ -46,10 +45,9 @@ public class StudentProgressController extends HttpServlet {
                         }
                     }
                     if (es.getKey().equals("disciplines")) {
-                        List disciplines = (ArrayList) es.getValue();
+                        List<Discipline> disciplines = (ArrayList) es.getValue();
                         Iterator<Integer> grades = Arrays.stream(setGrades).map(Integer::parseInt).iterator();
-                        for (Object o : disciplines) {
-                            Discipline discipline = (Discipline) o;
+                        for (Discipline discipline : disciplines) {
                             currentMark.set(grades.next());
                             if (currentMark.get() != 0) {
                                 discipline.setMark(currentMark.get());
@@ -59,7 +57,7 @@ public class StudentProgressController extends HttpServlet {
 
                     data.put("marks", setGrades);
                 });
-                averageGradeByIdMark = averageMarkUtils.getAverageMark(data);
+                averageGradeByIdMark = getAverageMark(data);
                 req.setAttribute("grades", setGrades);
                 req.setAttribute("averageMark", averageGradeByIdMark);
             }
@@ -68,7 +66,7 @@ public class StudentProgressController extends HttpServlet {
             List<Integer> allTermId = TermDB.findAllTermId();
             int firstTermId = allTermId.get(0);
             data = StudentDB.findTermsDisciplinesOfStudentByStudentIdAndTermId(idStudent, firstTermId);
-            averageGradeByIdMark = averageMarkUtils.getAverageMark(data);
+            averageGradeByIdMark = getAverageMark(data);
 
             req.setAttribute("idTerm", firstTermId);
             req.setAttribute("averageMark", averageGradeByIdMark);
@@ -79,5 +77,12 @@ public class StudentProgressController extends HttpServlet {
         req.setAttribute("currentPage", "/WEB-INF/jsp/studentProgress.jsp");
         req.setAttribute("titlePage", "Успеваемость студента");
         req.getRequestDispatcher("/WEB-INF/jsp/template.jsp").forward(req, resp);
+    }
+
+    private double getAverageMark(Map<String, Object> data) {
+        ArrayList<Integer> marksId = (ArrayList<Integer>) data.get("marksId");
+        String marksIdStr = marksId.stream().map(Object::toString).collect(Collectors.joining(", "));
+        double averageGradeByIdMark = DisciplineDB.getAverageGradeByIdMark(marksIdStr);
+        return Math.round(averageGradeByIdMark * 100.0) / 100.0;
     }
 }
