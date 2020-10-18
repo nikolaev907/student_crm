@@ -65,10 +65,12 @@ public class StudentProgressController extends HttpServlet {
             }
             req.setAttribute("idTerm", idTerm);
         } else {
-            data = StudentDB.findTermsDisciplinesOfStudentByStudentIdAndTermId(idStudent, 1);
+            List<Integer> allTermId = TermDB.findAllTermId();
+            int firstTermId = allTermId.get(0);
+            data = StudentDB.findTermsDisciplinesOfStudentByStudentIdAndTermId(idStudent, firstTermId);
             averageGradeByIdMark = averageMarkUtils.getAverageMark(data);
 
-            req.setAttribute("idTerm", 1);
+            req.setAttribute("idTerm", firstTermId);
             req.setAttribute("averageMark", averageGradeByIdMark);
         }
         req.setAttribute("idProgressStudent", idProgressStudent);

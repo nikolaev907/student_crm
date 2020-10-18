@@ -94,7 +94,7 @@ public class TermDB {
 
         try {
             stm = con.createStatement();
-            rs = stm.executeQuery("SELECT id FROM term");
+            rs = stm.executeQuery("SELECT id FROM term WHERE status = 1");
             while (rs.next()) {
                 term.add(rs.getInt(1));
             }
