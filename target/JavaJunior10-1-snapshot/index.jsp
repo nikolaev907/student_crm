@@ -10,7 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="resources/css/bootstrap/bootstrap.min-4.3.1.css">
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/image/crm.ico"/>
+    <link rel="shortcut icon" type="image/x-icon"
+          href="${pageContext.request.contextPath}/resources/images/image/crm.ico"/>
     <script type="text/javascript" src="resources/js/jquery-3.4.1.slim.min.js"></script>
     <link rel="text/plane" href="${pageContext.request.contextPath}/resources/css/bootstrap/bootstrap.min.css.map">
     <script type="text/javascript" src="resources/js/jquery-1.12.4.js"></script>
